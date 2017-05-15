@@ -8,8 +8,8 @@ name: cool_app
 version: 0.0.1-alpha
 author: Samuel Marks <samuel@offscale.io>
 auth:
-  - {location: env.AUTH_FILE, type: 'file'}
-  - {location: env.AUTH_STR,  type: 'hashicorp_vault'}
+  - {location: $AUTH_FILE, type: 'file'}
+  - {location: $AUTH_STR,  type: 'hashicorp_vault'}
 nodes:
   - /unclustered/any-cluster-*
   min: 1
@@ -21,6 +21,8 @@ nodes:
     - Azure
     - AWS
     - private3y11
+  store: # where node info is retrieved from
+    - {url: $ETCD_URI, type: 'etcdv2'}
 types:
   - fabric
 store:  # store response/output
@@ -29,19 +31,19 @@ store:  # store response/output
   - logfile
 deps:
   - XOR
-    - env.RDBMS_URI
+    - remote_env.RDBMS_URI
     -
-      install: offregister-postgres
+      init: offregister-postgres
       steps: 'all'
       env: {cluster: false}
   - XOR
-    - env.CACHE_URI
+    - remote_env.CACHE_URI
     -
-      install: offregister-redis
+      init: offregister-redis
       steps: ['install_local0', 'serve_local1']
       env: {cluster: false}
 env:
-  COOL_APP_GIT_TAG: 'master'
+  COOL_APP_GIT_TAG: master
 sets_env:
   - COOL_APP_REST_API
   - COOL_APP_WWWROOT
@@ -49,15 +51,15 @@ sets_env:
   - COOL_APP_HTTPS_CERTS
 init:
   - offregister-bootstrap  # from offregister-bootstrap python-package, runs everything in its `init:`
-  - this.deploy_static     # from offregister-some-cool-app <-- repo where this file is
-  - this.deploy            # from offregister-some-cool-app, which uses offregister-app-push
+  - @deploy_static         # from offregister-some-cool-app <-- repo where this file is
+  - @deploy                # from offregister-some-cool-app, which uses offregister-app-push
   # also uses offregister-web-servers which in turn uses offregister-systemd
-  - this.serve             # from offregister-some-cool-app, uses offregister-githook & others
+  - @serve                 # from offregister-some-cool-app, uses offregister-githook & others
 del:
-  - this.stop              # stop daemons that init started
-  - this.daemon_rm         # delete daemons
-  - this.rm                # remove directories
-  - this.teardown          # uninstall services / other dependencies
+  - @stop                  # stop daemons that init started
+  - @daemon_rm             # delete daemons
+  - @rm                    # remove directories
+  - @teardown              # uninstall services / other dependencies
   - offregister-bootstrap  # from offregister-bootstrap python-package, runs everything in its `del:`
 ```
 
