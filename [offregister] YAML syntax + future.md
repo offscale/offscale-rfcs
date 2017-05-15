@@ -75,4 +75,6 @@ Figuring out exact why people should use offscale's suite rather than alternativ
   - Web apps and native mobile apps
   - Fancy analytics dashboards to explore—expenditure, load, and other metadata—per individual, team, department, location, and entire organisation.
 
+Finally that last bit with logging should be an exposed interface, so when provider-specific features—like RDBMS-aaS—are used, the analytics are aware of it. This will enable organisation-specific and provider-specific information to be communicated, without requiring involvement of Offscale's suite; and the scope-creep [& bad syntax] which comes of that.
+
 Now would that be enough of a philosophy and feature-set to make an impact, or am I missing something? - Also please critique my proposed syntax :)
