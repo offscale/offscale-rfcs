@@ -1,11 +1,13 @@
 # Concept 3
-This is an alternative idea, focussing on facilitating multi-tenant PaaS use-cases. The last example shows IaaS though.
+Here I try to streamline the idea from the ground up, thinking about modular YAML files held at each level (0. web frontend; 1. api; 2. database; 2. cache; 3. multi-tenant platform; 4. IaaS).
 
-Services are similar to those in CloudFoundry. These are generally stateful systems which offer things like databases, queues, caches and application gateways (e.g.: proxy to other server / some SaaS or DBaaS).
+Most of this explanation focusses on facilitating multi-tenant PaaS use-cases. Only the last example shows IaaS.
 
-Much of the requirements can be automatically inferred by shebang lines, reading package.json and similar techniques. These can also be explicitly set, like environment variables are expected to be.
+Decided to make applications and services the same thing, with just a `stateful` parameter to differentiate them. Services are designed with a similar philophy to CloudFoundry's. These are generally stateful systems which offer things like databases, queues, caches and application gateways (e.g.: proxy to other server / some SaaS or DBaaS).
 
-The PaaS 'package' has its `initial_` services, and an option to allow these to be extended by other services.
+For the application services, most of their requirements can be automatically inferred by shebang lines, reading package.json and similar techniques. These can also be explicitly set, like environment variables are expected to be.
+
+The PaaS 'package' has its `initial_` services, and an option to allow these to be extended by other services. Without this set, only new `stateless` services are allowed.
 E.g.: if service requires RabbitMQ and it's not installed in PaaS, then install it.
 
 Nothing in this design prevents the IaaS layer from being extended to support 2-way integration with Apache Brooklyn, Chef, Puppet, Ansible, Fabric and others. This opens the platform up to huge community & industry maintained marketplaces.
@@ -19,6 +21,7 @@ name: 'foo-rest-api'
 type: 'service'
 version: '0.0.1'
 root: 'offscale/sample-rest-api.git' # defaults to '.'
+stateless: true
 supported_platforms:
   - name: 'Platform name 77'
     has:
@@ -53,6 +56,7 @@ E.g.: redis-for-paas.git repo. This sets entry points for installation on differ
 name: 'redis'
 type: 'service'
 version: '0.0.1'
+stateless: false
 supported_platforms:
   - name: 'Platform name 62'
     has:
@@ -96,7 +100,7 @@ cluster_entry_points:
 Sets requirements for multi-tenant PaaS, including initial applications, initial services and location.
 
 ```yaml
-# Note: this is usually placed in a different repo, one which operations/DevOps or finance people look at
+# Note: this is usually placed in a different repo, one which operations/DevOps and management look at
 
 name: 'paas-name'
 type: 'package'
@@ -155,7 +159,7 @@ internals: {
 
 ## IaaS
 ```yaml
-# Note: this is usually placed in a different repo, one which operations/DevOps or finance people look at
+# Note: this is usually placed in a different repo, one which operations/DevOps and management look at
 
 name: 'iaas-name'
 type: 'IaaS'
