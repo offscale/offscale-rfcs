@@ -12,6 +12,15 @@ E.g.: if service requires RabbitMQ and it's not installed in PaaS, then install 
 
 Nothing in this design prevents the IaaS layer from being extended to support 2-way integration with Apache Brooklyn, Chef, Puppet, Ansible, Fabric and others. This opens the platform up to huge community & industry maintained marketplaces.
 
+## CLI
+
+    python -m offregister -c ~/offscale/sample-rest-api/deploy.yml -d iaas-name -s stop
+    python -m offregister -c ~/offscale/sample-rest-api/deploy.yml -d iaas-name -s start --dns foo.foo.com
+
+Adding a `--dns` here replaces (doesn't append) any existing dns from the deploy.yml.
+
+Next is to figure out, a `-s heal` syntax maybe with a `--min` to ensure a threshold of servers—running this service—are online.
+
 ## Service (for an application)
 Sets requirements for application, and this file is added to the repository of the application. E.g.: foo-rest-api.git
 
