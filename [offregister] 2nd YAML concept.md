@@ -14,15 +14,31 @@ Nothing in this design prevents the IaaS layer from being extended to support 2-
 
 ## CLI
 
+### offstrategy
+Handle deploy of IaaS layer:
+
+    python -m offregister -c ~/offscale/sample-confs/sample-iaas.yml --strategy cheapest -s start
+    python -m offregister -c ~/offscale/sample-confs/sample-iaas.yml --strategy cheapest -s stop
+
+### offswitch
+Convenient for bulk teardown:
+
+    python -m offswitch -c iaas1.yml -c iaas2.yml -c offregister-redis.yml
+
+### offregister
+Handle deploy of service, and PaaS/multi-service layer:
+
     python -m offregister -c ~/offscale/sample-rest-api/deploy.yml -d iaas-name -s stop
     python -m offregister -c ~/offscale/sample-rest-api/deploy.yml -d iaas-name -s start --dns foo.foo.com
 
-Adding a `--dns` here replaces (doesn't append) any existing dns from the deploy.yml.
+Adding a `--dns` here replaces (doesn't append) any existing DNS from the deploy.yml.
+
+---
 
 Next is to figure out, a `-s heal` syntax maybe with a `--min` to ensure a threshold of servers—running this service—are online.
 
 ## Service (for an application)
-Sets requirements for application, and this file is added to the repository of the application. E.g.: foo-rest-api.git
+Stored [preferably] in the root of the application repo, this tells the PaaS what's required:
 
 ```yaml
 # Note: this is placed as deploy.yml in the application repository, e.g.: foo-rest-api.git
@@ -58,7 +74,7 @@ dns:
 ```
 
 ## Service (for a database/cache)
-E.g.: redis-for-paas.git repo. This sets entry points for installation on different platforms, credentials (RBAC) and cluster configuration
+Stored in the service repo, e.g.: offscale/offregister-redis.git. This sets entry points for installation on different platforms, credentials (RBAC) and cluster configuration:
 ```yaml
 # Note: place this in a repo like mypaas-redis-service.git, call it 'service.yaml'
 
@@ -104,6 +120,8 @@ cluster_entry_points:
   - name: 'cluster-require-full-coverage'
     type: 'boolean'
 ```
+
+Note the `*_entry_points` keys. These are expected to be set by a parent service or package.
 
 ## Package (for a PaaS)
 Sets requirements for multi-tenant PaaS, including initial applications, initial services and location.
