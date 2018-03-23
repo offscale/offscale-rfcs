@@ -1,0 +1,52 @@
+---
+name: paas-name
+type: package
+version: 0.0.1
+destination:
+- provider: azure
+  credentials: ''
+  zone: Australia East
+  threshold: # set a number of servers allowed here
+- provider: vagrant
+  type: docker
+- provider: docker
+# alternatively: `destination: 'iaas-name'` if IaaS layer separately deployed
+initial_credentials:
+- key: ''
+initial_services:
+- name: "../../foo-rest-api"
+  location: filepath or git repo path both to application.yaml file
+- name: offscale/postgres.git#master
+  options: "# cluster options, credentials &etc."
+- name: offscale/redis.git#master
+  version: ">4"
+  options: "# cluster options, credentials &etc."
+# &etc.
+allow_services_to_define_others: true
+core:
+- name: DNS server 3
+  type: DNS
+  service: offscale/offregister-consul.git#master
+- name: DNS server 4
+  type: DNS
+  service: offscale/offregister-libcloud-dns-bridge.git#master
+  config:
+  - provider: azure
+    credentials: ''
+    zone: Australia East
+- name: Resource allocator 7
+  type: resource-allocator
+  service: mesos
+sensors:
+- name: Logging service 2
+  type: logging
+  service:
+  - name: InfluxDB
+    version: '1.5'
+- name: Alert service 3
+  type: alerts
+  service:
+  - name: Nagios Core
+    version: ">4.3"
+internals:
+  inferred: true # default

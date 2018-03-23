@@ -1,0 +1,24 @@
+---
+# Note: this is usually placed in a different repo, one which operations/DevOps and management look at
+
+name: iaas-name
+type: IaaS
+version: 0.0.1
+destination:
+- provider: azure
+  credentials: {}
+  zone: Australia East
+- provider: aws
+  credentials: {}
+  zone: ap-southeast-2
+- provider: docker
+strategy: cheapest
+multicloud: false # default
+initial_nodes: 15
+threshold: # always have 15; non elastic (can't create new or remove without replacing)
+  min: 15
+  max: 15
+internals:
+  inferred: true # default; does basic networking and port opening
+  extra:
+  - save_to: etcd://localhost:2379 # default

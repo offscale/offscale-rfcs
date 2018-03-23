@@ -1,0 +1,239 @@
+{
+    "required": [
+        "internals", 
+        "name", 
+        "stateless", 
+        "supported_platforms", 
+        "type", 
+        "version"
+    ], 
+    "type": "object", 
+    "properties": {
+        "stateless": {
+            "type": "boolean"
+        }, 
+        "name": {
+            "type": "string"
+        }, 
+        "type": {
+            "type": "string"
+        }, 
+        "internals": {
+            "required": [
+                "inferred"
+            ], 
+            "type": "object", 
+            "properties": {
+                "tasks": {
+                    "items": {
+                        "required": [
+                            "kwargs", 
+                            "module", 
+                            "type"
+                        ], 
+                        "type": "object", 
+                        "properties": {
+                            "type": {
+                                "type": "string"
+                            }, 
+                            "module": {
+                                "type": "string"
+                            }, 
+                            "kwargs": {
+                                "required": [
+                                    "auth", 
+                                    "version"
+                                ], 
+                                "type": "object", 
+                                "properties": {
+                                    "version": {
+                                        "type": "integer"
+                                    }, 
+                                    "auth": {
+                                        "items": {
+                                            "required": [
+                                                "password", 
+                                                "username"
+                                            ], 
+                                            "type": "object", 
+                                            "properties": {
+                                                "username": {
+                                                    "type": "string"
+                                                }, 
+                                                "password": {
+                                                    "required": [
+                                                        "$ref"
+                                                    ], 
+                                                    "type": "object", 
+                                                    "properties": {
+                                                        "$ref": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }, 
+                                        "type": "array"
+                                    }
+                                }
+                            }
+                        }
+                    }, 
+                    "type": "array"
+                }, 
+                "inferred": {
+                    "type": "boolean"
+                }
+            }
+        }, 
+        "version": {
+            "type": "string"
+        }, 
+        "supported_platforms": {
+            "items": {
+                "required": [
+                    "has", 
+                    "name"
+                ], 
+                "type": "object", 
+                "properties": {
+                    "has": {
+                        "items": {
+                            "type": "object", 
+                            "properties": {
+                                "interpreters": {
+                                    "items": {
+                                        "required": [
+                                            "name", 
+                                            "version"
+                                        ], 
+                                        "type": "object", 
+                                        "properties": {
+                                            "version": {
+                                                "type": "string"
+                                            }, 
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }, 
+                                    "type": "array"
+                                }, 
+                                "os": {
+                                    "items": {
+                                        "required": [
+                                            "name", 
+                                            "version"
+                                        ], 
+                                        "type": "object", 
+                                        "properties": {
+                                            "version": {
+                                                "type": "string"
+                                            }, 
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }, 
+                                    "type": "array"
+                                }
+                            }
+                        }, 
+                        "type": "array"
+                    }, 
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            }, 
+            "type": "array"
+        }, 
+        "dns": {
+            "items": {
+                "type": "string"
+            }, 
+            "type": "array"
+        }, 
+        "services": {
+            "items": {
+                "required": [
+                    "name", 
+                    "to_env"
+                ], 
+                "type": "object", 
+                "properties": {
+                    "to_env": {
+                        "type": "string"
+                    }, 
+                    "version": {
+                        "type": "string"
+                    }, 
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            }, 
+            "type": "array"
+        }, 
+        "security": {
+            "items": {
+                "required": [
+                    "TLS", 
+                    "certificates", 
+                    "protocol"
+                ], 
+                "type": "object", 
+                "properties": {
+                    "TLS": {
+                        "type": "string"
+                    }, 
+                    "certificates": {
+                        "type": "string"
+                    }, 
+                    "protocol": {
+                        "type": "string"
+                    }
+                }
+            }, 
+            "type": "array"
+        }, 
+        "cluster_entry_points": {
+            "items": {
+                "required": [
+                    "name", 
+                    "type"
+                ], 
+                "type": "object", 
+                "properties": {
+                    "constrains": {
+                        "type": "string"
+                    }, 
+                    "type": {
+                        "type": "string"
+                    }, 
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            }, 
+            "type": "array"
+        }, 
+        "root": {
+            "type": "string"
+        }, 
+        "env_entry_points": {
+            "items": {
+                "required": [
+                    "name"
+                ], 
+                "type": "object", 
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            }, 
+            "type": "array"
+        }
+    }
+}

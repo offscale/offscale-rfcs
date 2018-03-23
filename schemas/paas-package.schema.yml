@@ -1,0 +1,124 @@
+properties:
+  allow_services_to_define_others:
+    type: boolean
+  core:
+    items:
+      properties:
+        config:
+          items:
+            properties:
+              credentials:
+                type: string
+              provider:
+                type: string
+              zone:
+                type: string
+            required:
+            - credentials
+            - provider
+            - zone
+            type: object
+          type: array
+        name:
+          type: string
+        service:
+          type: string
+        type:
+          type: string
+      required:
+      - name
+      - service
+      - type
+      type: object
+    type: array
+  destination:
+    items:
+      properties:
+        credentials:
+          type: string
+        provider:
+          type: string
+        threshold:
+          type: 'null'
+        type:
+          type: string
+        zone:
+          type: string
+      required:
+      - provider
+      type: object
+    type: array
+  initial_credentials:
+    items:
+      properties:
+        key:
+          type: string
+      required:
+      - key
+      type: object
+    type: array
+  initial_services:
+    items:
+      properties:
+        location:
+          type: string
+        name:
+          type: string
+        options:
+          type: string
+        version:
+          type: string
+      required:
+      - name
+      type: object
+    type: array
+  internals:
+    properties:
+      inferred:
+        type: boolean
+    required:
+    - inferred
+    type: object
+  name:
+    type: string
+  sensors:
+    items:
+      properties:
+        name:
+          type: string
+        service:
+          items:
+            properties:
+              name:
+                type: string
+              version:
+                type: string
+            required:
+            - name
+            - version
+            type: object
+          type: array
+        type:
+          type: string
+      required:
+      - name
+      - service
+      - type
+      type: object
+    type: array
+  type:
+    type: string
+  version:
+    type: string
+required:
+- allow_services_to_define_others
+- core
+- destination
+- initial_credentials
+- initial_services
+- internals
+- name
+- sensors
+- type
+- version
+type: object

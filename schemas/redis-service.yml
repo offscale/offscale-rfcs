@@ -1,0 +1,41 @@
+---
+name: redis
+type: service
+version: 0.0.1
+stateless: false
+supported_platforms:
+- name: Platform name 62
+  has:
+  - interpreters:
+    - name: lua
+      version: ">5.1"
+  - os:
+    - name: Ubuntu
+      version: ">12.10"
+internals:
+  inferred: false
+  tasks:
+  - module: offregister-redis
+    type: fabric
+    kwargs:
+      version: 4
+      auth:
+      - username: foo
+        password:
+          "$ref": env:REDIS_PASSWORD
+env_entry_points:
+- name: URI
+cluster_entry_points:
+- name: cluster_size
+  type: unsigned
+  constrains: "&1!=0"
+- name: cluster-config-file
+  type: string
+- name: cluster-node-timeout
+  type: unsigned
+- name: cluster-slave-validity-factor
+  type: unsigned
+- name: cluster-migration-barrier
+  type: unsigned
+- name: cluster-require-full-coverage
+  type: boolean

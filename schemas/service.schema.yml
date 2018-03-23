@@ -1,0 +1,159 @@
+properties:
+  cluster_entry_points:
+    items:
+      properties:
+        constrains:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+      required:
+      - name
+      - type
+      type: object
+    type: array
+  dns:
+    items:
+      type: string
+    type: array
+  env_entry_points:
+    items:
+      properties:
+        name:
+          type: string
+      required:
+      - name
+      type: object
+    type: array
+  internals:
+    properties:
+      inferred:
+        type: boolean
+      tasks:
+        items:
+          properties:
+            kwargs:
+              properties:
+                auth:
+                  items:
+                    properties:
+                      password:
+                        properties:
+                          $ref:
+                            type: string
+                        required:
+                        - $ref
+                        type: object
+                      username:
+                        type: string
+                    required:
+                    - password
+                    - username
+                    type: object
+                  type: array
+                version:
+                  type: integer
+              required:
+              - auth
+              - version
+              type: object
+            module:
+              type: string
+            type:
+              type: string
+          required:
+          - kwargs
+          - module
+          - type
+          type: object
+        type: array
+    required:
+    - inferred
+    type: object
+  name:
+    type: string
+  root:
+    type: string
+  security:
+    items:
+      properties:
+        TLS:
+          type: string
+        certificates:
+          type: string
+        protocol:
+          type: string
+      required:
+      - TLS
+      - certificates
+      - protocol
+      type: object
+    type: array
+  services:
+    items:
+      properties:
+        name:
+          type: string
+        to_env:
+          type: string
+        version:
+          type: string
+      required:
+      - name
+      - to_env
+      type: object
+    type: array
+  stateless:
+    type: boolean
+  supported_platforms:
+    items:
+      properties:
+        has:
+          items:
+            properties:
+              interpreters:
+                items:
+                  properties:
+                    name:
+                      type: string
+                    version:
+                      type: string
+                  required:
+                  - name
+                  - version
+                  type: object
+                type: array
+              os:
+                items:
+                  properties:
+                    name:
+                      type: string
+                    version:
+                      type: string
+                  required:
+                  - name
+                  - version
+                  type: object
+                type: array
+            type: object
+          type: array
+        name:
+          type: string
+      required:
+      - has
+      - name
+      type: object
+    type: array
+  type:
+    type: string
+  version:
+    type: string
+required:
+- internals
+- name
+- stateless
+- supported_platforms
+- type
+- version
+type: object

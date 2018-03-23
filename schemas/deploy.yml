@@ -1,0 +1,30 @@
+---
+# Note: this is placed as deploy.yml in the application repository, e.g.: foo-rest-api.git
+name: foo-rest-api
+type: service
+version: 0.0.1
+root: offscale/sample-rest-api.git # defaults to '.'
+stateless: true
+supported_platforms:
+- name: Platform name 77
+  has:
+  - interpreters:
+    - name: python
+      version: ">2.6<3"
+  - os:
+    - name: Ubuntu
+      version: ">12.10"
+internals:
+  inferred: true
+services:
+- name: postgres  # resolve name to official, else require <owner>/<name>
+  version: ">9.6"
+  to_env: POSTGRES_URI
+- name: redis
+  to_env: REDIS_URI
+security:
+- protocol: HTTPS
+  TLS: ">=1.3"
+  certificates: certbot
+dns:
+- bar.can.com
