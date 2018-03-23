@@ -41,84 +41,82 @@ Next is to figure out, a `-s heal` syntax maybe with a `--min` to ensure a thres
 Stored [preferably] in the root of the application repo, this tells the PaaS what's required:
 
 ```yaml
+---
 # Note: this is placed as deploy.yml in the application repository, e.g.: foo-rest-api.git
-name: 'foo-rest-api'
-type: 'service'
-version: '0.0.1'
-root: 'offscale/sample-rest-api.git' # defaults to '.'
+name: foo-rest-api
+type: service
+version: 0.0.1
+root: offscale/sample-rest-api.git # defaults to '.'
 stateless: true
 supported_platforms:
-  - name: 'Platform name 77'
-    has:
-      - interpreters:
-        - name: 'python'
-          version: '>2.6<3'
-      - os:
-        - name: 'Ubuntu'
-          version: '>12.10'
-internals: {
+- name: Platform name 77
+  has:
+  - interpreters:
+    - name: python
+      version: ">2.6<3"
+  - os:
+    - name: Ubuntu
+      version: ">12.10"
+internals:
   inferred: true
-}
 services:
-  - name: 'postgres'  # resolve name to official, else require <owner>/<name>
-    version: '>9.6'
-    to_env: 'POSTGRES_URI'
-  - name: 'redis'
-    to_env: 'REDIS_URI'
+- name: postgres  # resolve name to official, else require <owner>/<name>
+  version: ">9.6"
+  to_env: POSTGRES_URI
+- name: redis
+  to_env: REDIS_URI
 security:
-  - protocol: 'HTTPS'
-    TLS: '>=1.3'
-    certificates: 'certbot'
+- protocol: HTTPS
+  TLS: ">=1.3"
+  certificates: certbot
 dns:
-  - 'bar.can.com'
+- bar.can.com
 ```
 
 ## Service (for a database/cache)
 Stored in the service repo, e.g.: offscale/offregister-redis.git. This sets entry points for installation on different platforms, credentials (RBAC) and cluster configuration:
 ```yaml
-# Note: place this in a repo like mypaas-redis-service.git, call it 'service.yaml'
-
-name: 'redis'
-type: 'service'
-version: '0.0.1'
+---
+name: redis
+type: service
+version: 0.0.1
 stateless: false
 supported_platforms:
-  - name: 'Platform name 62'
-    has:
-      - interpreters:
-        - name: 'lua'
-          version: '>5.1'
-      - os:
-        - name: 'Ubuntu'
-          version: '>12.10'
-internals: {
-  inferred: false,
+- name: Platform name 62
+  has:
+  - interpreters:
+    - name: lua
+      version: ">5.1"
+  - os:
+    - name: Ubuntu
+      version: ">12.10"
+internals:
+  inferred: false
   tasks:
-    - module: 'offregister-redis'
-      type: 'fabric'
-      kwargs: {
-        version: 4,
-        auth:
-          - username: 'foo'
-            password: {"$ref": "env:REDIS_PASSWORD"}
-      }
-}
+  - module: offregister-redis
+    type: fabric
+    kwargs:
+      version: 4
+      auth:
+      - username: foo
+        password:
+          "$ref": env:REDIS_PASSWORD
 env_entry_points:
-  - name: 'URI' # There's only one env, so it's auto translated to whatever alias is set in application.yaml
+- name: URI
 cluster_entry_points:
-  - name: 'cluster_size'
-    type: 'unsigned'
-    constrains: '&1!=0'  # odd
-  - name: 'cluster-config-file'
-    type: 'string'  # regex allowed! - Maybe even go full JSON-schema here...
-  - name: 'cluster-node-timeout'
-    type: 'unsigned'
-  - name: 'cluster-slave-validity-factor'
-    type: 'unsigned'
-  - name: 'cluster-migration-barrier'
-    type: 'unsigned'
-  - name: 'cluster-require-full-coverage'
-    type: 'boolean'
+- name: cluster_size
+  type: unsigned
+  constrains: "&1!=0"
+- name: cluster-config-file
+  type: string
+- name: cluster-node-timeout
+  type: unsigned
+- name: cluster-slave-validity-factor
+  type: unsigned
+- name: cluster-migration-barrier
+  type: unsigned
+- name: cluster-require-full-coverage
+  type: boolean
 ```
 
 Note the `*_entry_points` keys. These are expected to be set by a parent service or package.
@@ -127,89 +125,84 @@ Note the `*_entry_points` keys. These are expected to be set by a parent service
 Sets requirements for multi-tenant PaaS, including initial applications, initial services and location.
 
 ```yaml
-# Note: this is usually placed in a different repo, one which operations/DevOps and management look at
-
-name: 'paas-name'
-type: 'package'
-version: '0.0.1'
+---
+name: paas-name
+type: package
+version: 0.0.1
 destination:
-   - provider: 'azure'
-     credentials: ''
-     zone: 'Australia East'
-     threshold: null # set a number of servers allowed here
-   - provider: 'vagrant'
-     type: 'docker'
-   - provider: 'docker'
-   # &etc.
+- provider: azure
+  credentials: ''
+  zone: Australia East
+  threshold: # set a number of servers allowed here
+- provider: vagrant
+  type: docker
+- provider: docker
 # alternatively: `destination: 'iaas-name'` if IaaS layer separately deployed
 initial_credentials:
-  - key: ''
+- key: ''
 initial_services:
-  - name: '../../foo-rest-api'
-    location: 'filepath or git repo path both to application.yaml file'
-  - name: 'offscale/postgres.git#master'
-    options: '# cluster options, credentials &etc.'
-  - name: 'offscale/redis.git#master'
-    version: '>4'
-    options: '# cluster options, credentials &etc.'
+- name: "../../foo-rest-api"
+  location: filepath or git repo path both to application.yaml file
+- name: offscale/postgres.git#master
+  options: "# cluster options, credentials &etc."
+- name: offscale/redis.git#master
+  version: ">4"
+  options: "# cluster options, credentials &etc."
 # &etc.
 allow_services_to_define_others: true
 core:
-  - name: 'DNS server 3'
-    type: 'DNS'
-    service: 'offscale/offregister-consul.git#master'
-  - name: 'DNS server 4'
-    type: 'DNS'
-    service: 'offscale/offregister-libcloud-dns-bridge.git#master'
-    config:
-      - provider: 'azure'
-        credentials: ''
-        zone: 'Australia East'
-  - name: 'Resource allocator 7'
-    type: 'resource-allocator'
-    service: 'mesos'
+- name: DNS server 3
+  type: DNS
+  service: offscale/offregister-consul.git#master
+- name: DNS server 4
+  type: DNS
+  service: offscale/offregister-libcloud-dns-bridge.git#master
+  config:
+  - provider: azure
+    credentials: ''
+    zone: Australia East
+- name: Resource allocator 7
+  type: resource-allocator
+  service: mesos
 sensors:
-  - name: 'Logging service 2'
-    type: 'logging'
-    service:
-      - name: 'InfluxDB'
-        version: '1.5'
-  - name: 'Alert service 3'
-    type: 'alerts'
-    service:
-      - name: 'Nagios Core'
-        version: '>4.3'
-internals: {
+- name: Logging service 2
+  type: logging
+  service:
+  - name: InfluxDB
+    version: '1.5'
+- name: Alert service 3
+  type: alerts
+  service:
+  - name: Nagios Core
+    version: ">4.3"
+internals:
   inferred: true # default
-}
 ```
 
 ## IaaS
 ```yaml
+---
 # Note: this is usually placed in a different repo, one which operations/DevOps and management look at
 
-name: 'iaas-name'
-type: 'IaaS'
-version: '0.0.1'
+name: iaas-name
+type: IaaS
+version: 0.0.1
 destination:
-   - provider: 'azure'
-     credentials: {}
-     zone: 'Australia East'
-   - provider: 'aws'
-     credentials: {}
-     zone: 'ap-southeast-2'
-   - provider: 'docker'
-   # &etc.
-strategy: 'cheapest'
+- provider: azure
+  credentials: {}
+  zone: Australia East
+- provider: aws
+  credentials: {}
+  zone: ap-southeast-2
+- provider: docker
+strategy: cheapest
 multicloud: false # default
 initial_nodes: 15
-threshold: {
+threshold: # always have 15; non elastic (can't create new or remove without replacing)
   min: 15
   max: 15
-} # always have 15; non elastic (can't create new or remove without replacing)
-internals: {
+internals:
   inferred: true # default; does basic networking and port opening
   extra:
-    - save_to: 'etcd://localhost:2379' # default
-}
+  - save_to: etcd://localhost:2379 # default
 ```
