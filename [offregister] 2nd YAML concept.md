@@ -203,6 +203,9 @@ threshold: # always have 15; non elastic (can't create new or remove without rep
   max: 15
 internals:
   inferred: true # default; does basic networking and port opening
-  extra:
-  - save_to: etcd://localhost:2379 # default
+  store_existence: etcd://localhost:2379 # default
 ```
+
+---
+
+See [schemas directory](schemas) for JSON-Schema and more examples.

@@ -1,0 +1,9 @@
+---
+name: simple-package
+type: package
+version: 0.0.1
+destination: 'iaas-name'
+allow_services_to_define_others: true
+internals:
+  inferred: false
+  store_existence: etcd://localhost:2379

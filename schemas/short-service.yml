@@ -1,0 +1,9 @@
+---
+name: shorty
+type: service
+version: 0.0.1
+stateless: false
+supported_platforms:
+- name: Platform name 62
+internals:
+  inferred: true
