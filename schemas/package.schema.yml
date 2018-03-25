@@ -71,8 +71,6 @@ properties:
     required:
     - inferred
     type: object
-  name:
-    type: string
   root:
     type: string
   security:
@@ -144,15 +142,18 @@ properties:
       - name
       type: object
     type: array
+  title:
+    type: string
   type:
     type: string
   version:
     type: string
 required:
 - internals
-- name
 - stateless
 - supported_platforms
+- title
 - type
 - version
+title: package
 type: object

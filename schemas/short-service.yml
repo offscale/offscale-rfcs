@@ -1,5 +1,5 @@
 ---
-name: shorty
+title: shorty
 type: service
 version: 0.0.1
 stateless: false

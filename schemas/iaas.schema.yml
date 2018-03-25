@@ -1,0 +1,58 @@
+properties:
+  destination:
+    items:
+      properties:
+        credentials:
+          type: object
+        provider:
+          type: string
+        zone:
+          type: string
+      required:
+      - provider
+      type: object
+    type: array
+  initial_nodes:
+    type: integer
+  internals:
+    properties:
+      inferred:
+        type: boolean
+      store_existence:
+        type: string
+    required:
+    - inferred
+    - store_existence
+    type: object
+  multicloud:
+    type: boolean
+  strategy:
+    type: string
+  threshold:
+    properties:
+      max:
+        type: integer
+      min:
+        type: integer
+    required:
+    - max
+    - min
+    type: object
+  title:
+    type: string
+  type:
+    type: string
+  version:
+    type: string
+required:
+- destination
+- initial_nodes
+- internals
+- multicloud
+- strategy
+- threshold
+- title
+- type
+- version
+title: iaas
+type: object

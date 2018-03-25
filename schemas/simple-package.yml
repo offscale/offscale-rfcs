@@ -1,5 +1,5 @@
 ---
-name: simple-package
+title: simple-package
 type: package
 version: 0.0.1
 destination: 'iaas-name'

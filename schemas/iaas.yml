@@ -1,7 +1,7 @@
 ---
 # Note: this is usually placed in a different repo, one which operations/DevOps and management look at
 
-name: iaas-name
+title: iaas-name
 type: IaaS
 version: 0.0.1
 destination:

@@ -1,5 +1,5 @@
 ---
-name: redis
+title: redis
 type: service
 version: 0.0.1
 stateless: false

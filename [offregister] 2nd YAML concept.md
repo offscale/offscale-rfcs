@@ -43,7 +43,7 @@ Stored [preferably] in the root of the application repo, this tells the PaaS wha
 ```yaml
 ---
 # Note: this is placed as deploy.yml in the application repository, e.g.: foo-rest-api.git
-name: foo-rest-api
+title: foo-rest-api
 type: service
 version: 0.0.1
 root: offscale/sample-rest-api.git # defaults to '.'
@@ -77,7 +77,7 @@ dns:
 Stored in the service repo, e.g.: offscale/offregister-redis.git. This sets entry points for installation on different platforms, credentials (RBAC) and cluster configuration:
 ```yaml
 ---
-name: redis
+title: redis
 type: service
 version: 0.0.1
 stateless: false
@@ -126,7 +126,7 @@ Sets requirements for multi-tenant PaaS, including initial applications, initial
 
 ```yaml
 ---
-name: paas-name
+title: paas-name
 type: package
 version: 0.0.1
 destination:
@@ -184,7 +184,7 @@ internals:
 ---
 # Note: this is usually placed in a different repo, one which operations/DevOps and management look at
 
-name: iaas-name
+title: iaas-name
 type: IaaS
 version: 0.0.1
 destination:

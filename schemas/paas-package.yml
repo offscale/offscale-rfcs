@@ -1,5 +1,5 @@
 ---
-name: paas-name
+title: paas-name
 type: package
 version: 0.0.1
 destination:

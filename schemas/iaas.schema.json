@@ -1,0 +1,85 @@
+{
+    "required": [
+        "destination", 
+        "initial_nodes", 
+        "internals", 
+        "multicloud", 
+        "strategy", 
+        "threshold", 
+        "title", 
+        "type", 
+        "version"
+    ], 
+    "type": "object", 
+    "properties": {
+        "multicloud": {
+            "type": "boolean"
+        }, 
+        "internals": {
+            "required": [
+                "inferred", 
+                "store_existence"
+            ], 
+            "type": "object", 
+            "properties": {
+                "store_existence": {
+                    "type": "string"
+                }, 
+                "inferred": {
+                    "type": "boolean"
+                }
+            }
+        }, 
+        "initial_nodes": {
+            "type": "integer"
+        }, 
+        "destination": {
+            "items": {
+                "required": [
+                    "provider"
+                ], 
+                "type": "object", 
+                "properties": {
+                    "credentials": {
+                        "type": "object"
+                    }, 
+                    "zone": {
+                        "type": "string"
+                    }, 
+                    "provider": {
+                        "type": "string"
+                    }
+                }
+            }, 
+            "type": "array"
+        }, 
+        "strategy": {
+            "type": "string"
+        }, 
+        "version": {
+            "type": "string"
+        }, 
+        "threshold": {
+            "required": [
+                "max", 
+                "min"
+            ], 
+            "type": "object", 
+            "properties": {
+                "max": {
+                    "type": "integer"
+                }, 
+                "min": {
+                    "type": "integer"
+                }
+            }
+        }, 
+        "title": {
+            "type": "string"
+        }, 
+        "type": {
+            "type": "string"
+        }
+    }, 
+    "title": "iaas"
+}

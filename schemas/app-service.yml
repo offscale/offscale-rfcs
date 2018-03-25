@@ -1,6 +1,6 @@
 ---
 # Note: this is placed as deploy.yml in the application repository, e.g.: foo-rest-api.git
-name: foo-rest-api
+title: foo-rest-api
 type: service
 version: 0.0.1
 root: offscale/sample-rest-api.git # defaults to '.'

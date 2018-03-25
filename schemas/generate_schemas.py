@@ -14,7 +14,9 @@ def as_dict(fname):
 
 def to_schema(fname, *ds):
     s = genson.Schema()
-    s.add_schema({"type": "object", "properties": {}})
+    s.add_schema({"type": "object", "properties": {},
+                  "title": (lambda fname: fname[:fname.find('.')])(path.basename(fname))
+                  })
     for d in ds:
       s.add_object(d)
     with open(path.join(schemas_dir,
@@ -36,5 +38,6 @@ if __name__ == '__main__':
                  for f in listdir(schemas_dir) if f.endswith('.yml'))
     to_schema('service.schema.json', *seq1_endswith0(ymls, 'service.yml'))
     to_schema('package.schema.json', *seq1_endswith0(ymls, 'service.yml'))
+    to_schema('iaas.schema.json', *seq1_endswith0(ymls, 'iaas.yml'))
     tuple(yml_out(path.join(schemas_dir, f)) for f in listdir(schemas_dir)
           if f.endswith('.json'))
