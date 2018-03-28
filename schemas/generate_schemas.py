@@ -17,6 +17,7 @@ def to_schema(fname, *ds):
     s.add_schema({"type": "object", "properties": {},
                   "title": (lambda fname: fname[:fname.find('.')])(path.basename(fname))
                   })
+    s.schema_uri = 'http://json-schema.org/draft-04/schema'
     for d in ds:
       s.add_object(d)
     with open(path.join(schemas_dir,
