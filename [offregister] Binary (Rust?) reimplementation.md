@@ -14,6 +14,14 @@ The main idea here is to go from the official 'Getting Started' guide to success
     [87/90 sudo operations]
     [137/590 total] (23.220338983050847457%)
 
+## Snapshots
+
+Enable deploys to continue from the same spot they last failed, e.g.: on reboot, network disconnect, or uncaught exception throw.
+
+Not sure if we want to go as far as BOSH, and produce intermediary parts and binary transfer it across.
+
+Would prefer to create a system which concentrates on developing OS-specific packages, where only modifications of configuration files are optimised.
+
 ## Produce binaries
 
     offregister_postgres <keyword arguments>
