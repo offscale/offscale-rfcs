@@ -32,31 +32,33 @@ Would prefer to create a system which concentrates on developing OS-specific pac
     offregister_postgres --check -c <config_file>
 
 Checks what current host has, possible output format:
-
-    configs:
-    - init_d: true
-    status:
-    - postgres_service: 'stopped'
-    version: 9.6.4
+```yaml
+configs:
+- init_d: true
+status:
+- postgres_service: 'stopped'
+version: 9.6.4
+```
 With nonzero exit-codes if current host hasn't been bootstrapped.
 
 ## Check command
 Produce a simple syntax like:
-
-    version: 9.6.4
-    os:
-    - Ubuntu 16.04
-    - Ubuntu 18.04
-    config:
-    - path: /etc/postgresql/9.6/main/postgresql.conf
-      sha256: 21004c91274b71d5eb0265dc40f8e0a47c78a1a868adcec4a771deb5e848797b
-      size: 22K
-    service:
-     - postgres: running
-    alive_script:
-     - shell: /bin/sh
-       cmd: pg_isready
-       exit_code: 0
+```yaml
+version: 9.6.4
+os:
+- Ubuntu 16.04
+- Ubuntu 18.04
+config:
+- path: /etc/postgresql/9.6/main/postgresql.conf
+  sha256: 21004c91274b71d5eb0265dc40f8e0a47c78a1a868adcec4a771deb5e848797b
+  size: 22K
+service:
+ - postgres: running
+alive_script:
+ - shell: /bin/sh
+   cmd: pg_isready
+   exit_code: 0
+```
 
 ### Generalised solution
 
@@ -88,11 +90,29 @@ Other mode:
                  --discovery_mode dynamic --discovery_stop 'n>=3' \
                  --role slave
 
-## Metrics
-Need ability to push metrics—e.g.: deployment progress—to servers, like syslog, InfluxDB, PrometheusDB &etc.
-
 ## Discovery
 Basic key/value store functionality, exposed in an abstracted interface (so you can use etcd, consul, Apache Zookeeper &etc). This will be necessary for the dynamic node discovery step.
+
+## Usage
+### CLI
+```bash
+$ ( offregister-postgres --version 9.6.4 --debug --foo && offregister-python ) | offmetric --server influxdb://influx.offscale.io
+```
+
+### Config
+```yaml
+name: taiga
+version: 0.0.1-alpha
+depends:
+- exec: offregister-postgres
+   args:
+   - --version 9.6.4
+   - --debug --foo
+   env: <some nice syntax>
+- exec: offregister-python
+env: <some nice syntax>
+pipe: offmetric --server influxdb://influx.offscale.io
+```
 
 ---
 
