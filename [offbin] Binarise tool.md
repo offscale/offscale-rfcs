@@ -37,6 +37,7 @@ can --makefile can.toml
  - All other arguments are put to the end of the command, e.g.: `npm run-script <args>`, instead of running the default
  - `--run`: explicit command to run at the end, rather than default (as ^)
  - `--arg`, `-A`: argument. Can be specified multiple times. This argument will go at the end of every run command. Expected to be used when you want the default runner with extra arguments provided.
+ - `--cache`: rather than ignoring everything in .gitignore, will cache entire folder
  
 ## Implementation detail
  
