@@ -4,7 +4,7 @@ Offscale develops tools and methodologies to simplify scalable application devel
 
 ## Philosophy
 - Open-source
-- Preference towards functionality, typed approaches
+- Preference towards functional, strongly typed languages & methodologies
 - Prefer non-VM languages (Rust, Swift, C++)
 - Cross-platform development, including: Windows, Linux and Mac (at least)
 
