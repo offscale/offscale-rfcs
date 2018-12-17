@@ -4,6 +4,33 @@ offbin
 ## Purpose
 Single command to run any of the commands that were previously in the directory.
 
+## Consider
+- Only supporting Makefile, `cargo make`, `mage`, `package.json` &etc., rather than making offbin a generic self-extracting format
+
+## CLI arguments for `offbin`
+ - `--version`
+ - `--help`
+ - `-v`, specify multiple times for greater verbosity (log levels)
+ - `--pipe`, specify default for all: `--pipe '*:stdout:file:///dev/stdout' --pipe '*:stderr:file:///dev/stderr'`, and specialisation: `package.json:stdout:'file://$name.stdout'`
+ - `--dry-run`: don't execute, just show what will be executed
+ - `--arg`, `-A`: argument. Added to the end of every default/specialised entrypoint. Can be specified multiple times.
+ - `--no-ignore-vcs`: rather than ignoring everything in .gitignore, will compress entire folder into the output binary.
+ - `--no-defaults`: no default entrypoints. Handy for using offbin as a simple self-extracting archive format, and for when `--entrypoint` are specified explicitly but not exhaustively.
+ - `--entrypoint`: explicit command to run, rather than default. Can be specified multiple times.
+ - All positional refer to tasks, `<binary> task0 task1` will run tasks: task0 and task1 sequentially
+
+## CLI arguments for `offbin`ifed binary
+ - `--version`
+ - `--help`
+ - `-v`, specify multiple times for greater verbosity (log levels)
+ - `--pipe`, specify default for all: `--pipe '*:stdout:file:///dev/stdout' --pipe '*:stderr:file:///dev/stderr'`, and specialisation: `package.json:stdout:'file://$name.stdout'`
+ - `--dry-run`: don't execute, just show what will be executed
+ - `--no-cleanup`: don't remove extracted files after run
+ - `--arg`, `-A`: argument. Added to the end of every default/specialised entrypoint. Can be specified multiple times.
+ - `--no-defaults`: no default entrypoints. Handy for using offbin as a simple self-extracting archive format, and for when `--entrypoint` are specified explicitly but not exhaustively.
+ - `--entrypoint`: explicit command to run, rather than default. Can be specified multiple times.
+ - All positional refer to tasks, `<binary> task0 task1` will run tasks: task0 and task1 sequentially
+
 ## Idea
 
 ### Example 0
@@ -56,15 +83,9 @@ $ /tmp/multi
 #### 1
 ```bash
 $ cd "$(mktemp -d)"
-$ /tmp/multi hello
+$ /tmp/multi package.json
 # Extracting with tar
 # Running 'package.json' with `npm run-script hello`
-# <output from ^>
-# Running 'Cargo.toml' with `cargo hello`
-# <output from ^>
-# Running 'Rakefile' with `rake hello`
-# <output from ^>
-# Running 'Makefile' with `make hello`
 # <output from ^>
 # Removing all extracted files
 ```
@@ -96,33 +117,38 @@ package.json  Cargo.toml  Rakefile  Makefile
 index.js      main.rs     cli.rb    main.c
 # Removing all extracted files
 ```
-
-## Consider
-- Only supporting Makefile, `cargo make`, `mage`, `package.json` &etc., rather than making offbin a generic self-extracting format
-
-## CLI arguments
-
- - `--version`
- - `--help`
- - `--dry-run`: don't execute, just show what will be executed
- - `--no-cleanup`: don't remove extracted files after run
- - `--arg`, `-A`: argument. This argument will go at the end of every run command. Expected to be used when you want the default runner with extra arguments provided. Can be specified multiple times.
- - `--no-ignore-vcs`: rather than ignoring everything in .gitignore, will compress entire folder into the output binary.
- - `--no-defaults`: no default entrypoints. Handy for using offbin as a simple self-extracting archive format, and for when `--entrypoint` are specified explicitly but not exhaustively.
- - `--entrypoint`: explicit command to run, rather than default. Can be specified multiple times.
- - All positional arguments are appended, e.g.: `cargo run <args>`, instead of `cargo run`
  
 ## Implementation detail
  
 Because many different language formats will be supported, create a mapping in a language-independent format, like:
 ```json
 {
-  "Makefile*": "make $@",
-  "Gruntfile": "grunt $@",
-  "makers": "makers $@",
-  "package.json": "npm run-script build",
-  "Makefile.toml": "cargo make $@",
-  "Cargo.toml": "cargo run"
+  "Makefile*": {
+    "command": "make $@",
+    "name": {"$ref": "#/README.md/name"}
+  },
+  "Gruntfile": {
+    "command": "grunt $@"
+  },
+  "makers": {
+    "command": "makers $@"
+  },
+  "package.json": {
+    "command": "npm run-script build",
+    "name": ".name"
+  },
+  "Makefile.toml": {
+    "command": "cargo make $@",
+    "name": {"$ref": "#/Cargo.toml/name"}
+  },
+  "Cargo.toml": {
+    "command": "cargo run",
+    "name": ".name"
+  },
+  "README.md": {
+    "command": null,
+    "name": "get_name_from_README()"
+  }
 }
 ```
 
