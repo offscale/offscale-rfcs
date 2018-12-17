@@ -1,8 +1,15 @@
 offscale: Differential edge
 ===========================
-Open-source; Rust; cross-platform (incl. Linux, Mac, & Windows); native focus (.deb, .msi, .pkg), with preference for non VM languages (Rust, Swift, C++) and typed, functional approaches.
+Offscale develops tools and methodologies to simplify scalable application development.
+
+## Philosophy
+- Open-source
+- Preference towards functionality, typed approaches
+- Prefer non-VM languages (Rust, Swift, C++)
+- Cross-platform development, including: Windows, Linux and Mac (at least)
 
 ## DevOps
+- Native packaging (.deb, .rpm, .msi, .pkg), rather than building from source / distributing loose binaries
 - [Rust] Improve speed and reliability of bootstrapping, including developer machine
 - [Rust] Orchestrate node configuration during deployment, using consensus
 - [Go] Support multiple public and private cloud providers
