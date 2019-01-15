@@ -11,13 +11,13 @@ Single command to run any of the commands that were previously in the directory.
  - `--version`
  - `--help`
  - `-v`, specify multiple times for greater verbosity (log levels)
- - `--pipe`, specify default for all: `--pipe '*:stdout:file:///dev/stdout' --pipe '*:stderr:file:///dev/stderr'`, and specialisation: `package.json:stdout:'file://$name.stdout'`
+ - `--default-pipe`, specify default for all: `--pipe '*:stdout:file:///dev/stdout' --pipe '*:stderr:file:///dev/stderr'`, and specialisation: `package.json:stdout:'file://$name.stdout'`
  - `--dry-run`: don't execute, just show what will be executed
- - `--arg`, `-A`: argument. Added to the end of every default/specialised entrypoint. Can be specified multiple times.
+ - `--default-arg`, `-A`: argument. Added to the end of every default/specialised entrypoint. Can be specified multiple times.
  - `--no-ignore-vcs`: rather than ignoring everything in .gitignore, will compress entire folder into the output binary.
  - `--no-defaults`: no default entrypoints. Handy for using offbin as a simple self-extracting archive format, and for when `--entrypoint` are specified explicitly but not exhaustively.
- - `--entrypoint`: explicit command to run, rather than default. Can be specified multiple times.
- - All positional refer to tasks, `<binary> task0 task1` will run tasks: task0 and task1 sequentially
+ - `--default-entrypoint`: explicit command to run, rather than default. Can be specified multiple times.
+ - All positional refer to tasks, `<binary> task0 task1` will run tasks: task0 and task1 sequentiallyf
 
 ## CLI arguments for `offbin`ifed binary
  - `--version`
@@ -153,3 +153,13 @@ Because many different language formats will be supported, create a mapping in a
 ```
 
 Also environment variables MUST be inherited from base process.
+
+## Ideal things to package
+Focus on technologies which work on 1 machine, like:
+
+- Ruby ([already a cross-platform Go implementation, just use this](https://bitbucket.org/jonforums/uru)), Python, Node.js, &etc.
+- Postgres, MySQL, &etc.
+- Elastic, RabbitMQ, &etc.
+- nginx, httpd, &etc.
+
+Then, for consensus requirements—i.e.: distributed system—use some combination of mechanisms to deploy, e.g.: `offbin` for installing base + SSH + key-value sharing so confs can be updated with `offbin`-produced binary. This will likely end up with 2-3 distinct binaries, `ssh`, `etcd` (or similar that we custom create for the sole purpose of bootstrapping confs on different nodes, and orchestrating instantiation), and `offbin`.
