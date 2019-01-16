@@ -155,9 +155,14 @@ Because many different language formats will be supported, create a mapping in a
 Also environment variables MUST be inherited from base process.
 
 ## Ideal things to package
-Focus on technologies which work on 1 machine, like:
+Focus on technologies which work on 1 machine, e.g.: a single server or dev machine.
 
-- Ruby ([already a cross-platform Go implementation, just use this](https://bitbucket.org/jonforums/uru)), Python, Node.js, &etc.
+Cross platform version management for interpreters:
+- Ruby (actually, there is a [Go implementation](https://bitbucket.org/jonforums/uru))
+- Node.js (actually, there is a [Go implementation](https://github.com/coreybutler/nvm-windows))
+- Python, Go, &etc.
+
+Potentially distributed solutions:
 - Postgres, MySQL, &etc.
 - Elastic, RabbitMQ, &etc.
 - nginx, httpd, &etc.
