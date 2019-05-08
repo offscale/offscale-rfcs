@@ -40,3 +40,8 @@ Approach:
 - Interfaces to explore data can be deeper, with well structured schemas and language-independent ontologies
 - Most use-cases for NoSQL are actually schema-full scenarios, where the schema is defined at another layer (e.g.: user created surveys). With CDD, this goes up the pipeline, and make for very efficient Big Data queries, e.g.: with SQL
 - Big Data interfaces can be exposed to management, and they can refine the data that's gathered through their business logic interfaces.
+
+## Distributed systems potential
+- We are writing consensus implementations, and multiconsensus abstractions (Raft, Paxos, our own leaderless BFT one)
+- Most architectures are 3+ tier (app, API, DB). Some approaches put more in the DB tier, either as stored procedures, or more in depth solutions like RethinkDB with its pubsub & WebSockets.
+- If we can simplify database development sufficiently, embedded optionally distributed databases could be created, and integrated within the API
