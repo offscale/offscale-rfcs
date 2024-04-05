@@ -1,4 +1,4 @@
-With support to run natively—i.e., no Docker, no WSL—ono Windows, Linux, macOS and others.
+With support to run natively—i.e., no Docker, no WSL—on Windows, Linux, macOS and others.
 
 0. Build a package-manager for each "thing" where thing could be:
   - Application runtimes
@@ -16,12 +16,16 @@ With support to run natively—i.e., no Docker, no WSL—ono Windows, Linux, mac
       - [uvicorn](https://www.uvicorn.org) (Python)
       - [Hypercorn](https://pgjones.gitlab.io/hypercorn) (Python)
       - [django/daphne](https://github.com/django/daphne) (Python)
-    - &etc
+    - WebAssembly (WASM)
+      - [ngx_wasm_module](https://github.com/Kong/ngx_wasm_module) (many, for NGINX)
+    - &etc ; e.g., see https://en.wikipedia.org/wiki/List_of_application_servers
   - Databases / storage layers
     - [PostgreSQL](https://postgresql.org)
     - [MySQL](https://www.mysql.com)
     - [MariaDB](https://mariadb.org)
     - [Redis](https://redis.io) (or better licensed forks/alternatives; like [Microsoft Garnet](https://github.com/microsoft/garnet))
+    - [NATS](https://github.com/nats-io/nats-server)
+    - [RabbitMQ](https://www.rabbitmq.com)
     - &etc.
   - Reverse proxies / HTTP(S) servers
     - [Apache httpd](https://httpd.apache.org)
@@ -29,7 +33,7 @@ With support to run natively—i.e., no Docker, no WSL—ono Windows, Linux, mac
       - [OpenResty®](https://openresty.org)
     - [envoy](https://envoyproxy.io) [maybe?]
     - &etc.
-  - Logging, alerting, storage
+  - Logging, alerting, event-storage
     - [Prometheus](https://prometheus.io)
     - [InfluxDB](https://github.com/influxdata/influxdb)
     - &etc.
